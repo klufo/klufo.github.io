@@ -4,15 +4,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_dispatch: # Позволяет запускать деплой вручную
+  workflow_dispatch:
 
-# Разрешения для деплоя на GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Отменяем предыдущие запуски при новом пуше
 concurrency:
   group: pages
   cancel-in-progress: true
