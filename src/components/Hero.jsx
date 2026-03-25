@@ -1,34 +1,26 @@
 // src/components/Hero.jsx
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useThree } from '@react-three/fiber'
 import { OrbitControls, Environment, ContactShadows } from '@react-three/drei'
+import { useEffect } from 'react'
+import * as THREE from 'three'
 import CharacterModel from './CharacterModel'
 import Particles from './Particles'
 
 export default function Hero() {
   return (
-    <div className="relative h-screen w-full bg-gradient-to-b from-slate-900 via-purple-950/40 to-slate-950 overflow-hidden">
+    <div className="relative h-screen w-full min-h-[70vh] md:min-h-screen bg-gradient-to-b from-slate-900 via-slate-950/40 to-slate-950 overflow-hidden">
       
-      {/* 🎨 3D Сцена */}
       <Canvas
-      
         camera={{ position: [0, 0, 5], fov: 50, near: 0.1, far: 100 }}
         shadows
         dpr={[1, 2]}
-         gl={{ 
-            antialias: true, 
-            powerPreference: 'high-performance',
-            alpha: true 
-  }}
+        style={{ touchAction: 'auto' }}
       >
-        {/* === 🌸 АНИМЕ-ОСВЕЩЕНИЕ === */}
+        <ShadowSetup />
         
-        {/* 1. Базовый мягкий свет (заполняющий) */}
-        <ambientLight 
-          intensity={0.4} 
-          color="#ffe4e6"
-        />
+        {/* Освещение */}
+        <ambientLight intensity={0.4} color="#ecfeff" />
         
-        {/* 2. Ключевой свет (основной источник, спереди-сверху) */}
         <directionalLight
           position={[4, 8, 4]}
           intensity={0.9}
@@ -38,38 +30,34 @@ export default function Hero() {
           shadow-bias={-0.0001}
         />
         
-        {/* 3. ✨ RIM LIGHT — розовый контур (главный секрет аниме!) */}
         <spotLight
           position={[-8, 4, -8]}
           angle={0.35}
           penumbra={0.9}
           intensity={1.5}
-          color="#f472b6"
+          color="#22d3ee"
           castShadow={false}
         />
         
-        {/* 4. Дополнительный акцент сзади-справа (фиолетовый) */}
         <spotLight
           position={[8, 3, -6]}
           angle={0.4}
           penumbra={0.8}
           intensity={0.8}
-          color="#c084fc"
+          color="#10b981"
           castShadow={false}
         />
         
-        {/* 5. Лёгкая подсветка снизу (для объёма) */}
         <pointLight
           position={[0, -2, 0]}
           intensity={0.3}
-          color="#fbcfe8"
+          color="#a5f3fc"
           distance={8}
         />
 
-        {/* === 🌆 ОКРУЖЕНИЕ === */}
-        <Environment preset="sunset" />
+        {/* Окружение и тени */}
+        <Environment preset="city" />
         
-        {/* Мягкие тени под ногами */}
         <ContactShadows
           position={[0, -1.5, 0]}
           opacity={0.35}
@@ -79,15 +67,11 @@ export default function Hero() {
           color="#1e1b4b"
         />
 
-        {/* === 🦊 ПЕРСОНАЖ === */}
-        <CharacterModel 
-          position={[0, -1.2, 0]} 
-          scale={1.5} 
-        />
+        {/* Персонаж и частицы */}
+        <CharacterModel position={[0, -1.2, 0]} scale={1.5} />
+        <Particles count={150} color="#22d3ee" />
 
-        <Particles count={150} color="#f472b6" />
-
-        {/* === 🎮 КАМЕРА === */}
+        {/* Управление камерой */}
         <OrbitControls 
           enablePan={false} 
           enableZoom={true} 
@@ -97,23 +81,58 @@ export default function Hero() {
           maxPolarAngle={Math.PI / 2.3}
           enableDamping
           dampingFactor={0.08}
-          autoRotate
+          autoRotate={false}
           autoRotateSpeed={0.4}
         />
       </Canvas>
 
-      {/* === ✨ ТЕКСТОВЫЙ ОВЕРЛЕЙ === */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <h1 className="text-5xl md:text-7xl font-bold text-center bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-2xl">
-          Привет, я 180SX
+      {/* Текстовый оверлей */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4">
+        
+        {/* Металлический заголовок */}
+        <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-center metallic-3d-text">
+          Привет, я klufo
         </h1>
-        <p className="mt-4 text-xl md:text-2xl text-slate-200 text-center max-w-2xl px-4 drop-shadow-md">
-          Creative Developer & Character Designer
+        
+        {/* Металлический подзаголовок */}
+        <p className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl lg:text-2xl text-center max-w-2xl metallic-3d-text-sub">
+          Creative Developer and Designer
         </p>
       </div>
 
-      {/* Декоративное свечение по краям */}
+      {/* Индикатор прокрутки для мобильных */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:hidden animate-bounce pointer-events-none">
+        <svg 
+          className="w-6 h-6 text-cyan-400" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth={2} 
+            d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+          />
+        </svg>
+      </div>
+
+      {/* Градиентный оверлей снизу */}
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-950/60 via-transparent to-slate-950/30" />
     </div>
   )
+}
+
+// Компонент для настройки теней
+function ShadowSetup() {
+  const { gl } = useThree()
+  
+  useEffect(() => {
+    if (gl) {
+      gl.shadowMap.enabled = true
+      gl.shadowMap.type = THREE.PCFShadowMap
+    }
+  }, [gl])
+  
+  return null
 }
