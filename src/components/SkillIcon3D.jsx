@@ -1,17 +1,17 @@
 // src/components/SkillIcon3D.jsx
 import { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF, OrbitControls } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 
 // Компонент для загрузки одной модели
-function Model({ url, scale = 1 }) {
+function Model({ url, scale = 1, rotationSpeed = 0.003 }) {
   const meshRef = useRef()
   const { scene } = useGLTF(url)
   
-  // Плавное вращение, когда пользователь не взаимодействует
-  useFrame((state) => {
-    if (meshRef.current && !state.pointer.moved) {
-      meshRef.current.rotation.y += 0.003
+  // Авто-вращение модели
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y += rotationSpeed
     }
   })
 
@@ -47,32 +47,19 @@ export default function SkillIcon3D({ type }) {
   const modelPath = modelPaths[type] || modelPaths.palette
 
   return (
-    <div className="w-24 h-24 mx-auto">
+    <div className="w-32 h-32 mx-auto">
       <Canvas
-        camera={{ position: [0, 0, 3], fov: 50 }}
+        camera={{ position: [0, 0, 4], fov: 50 }}
         gl={{ alpha: true, antialias: true }}
-        style={{ touchAction: 'pan-y' }} // Разрешаем скролл страницы
+        style={{ touchAction: 'none', pointerEvents: 'none' }}
       >
         <ambientLight intensity={0.8} />
         <directionalLight position={[2, 2, 2]} intensity={1} />
         <pointLight position={[-2, -2, -2]} intensity={0.5} color="#22d3ee" />
         
         <Suspense fallback={<Loader />}>
-          <Model url={modelPath} scale={2.5} />
+          <Model url={modelPath} scale={3} rotationSpeed={0.003} />
         </Suspense>
-        
-        {/* Управление камерой */}
-        <OrbitControls
-          enablePan={false}        // Запрещаем перемещение камеры
-          enableZoom={true}        // Разрешаем зум
-          enableRotate={true}      // Разрешаем вращение
-          minDistance={2}          // Минимальное приближение
-          maxDistance={6}          // Максимальное удаление
-          autoRotate={false}       // Отключаем авто-вращение (есть в useFrame)
-          autoRotateSpeed={0.5}
-          dampingFactor={0.1}      // Плавность остановки
-          enableDamping={true}
-        />
       </Canvas>
     </div>
   )
