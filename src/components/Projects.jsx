@@ -27,16 +27,16 @@ export default function Projects() {
       title: '3D Портфолио',
       description: 'Интерактивное портфолио с 3D-персонажем.',
       fullDescription: 'Полноценное портфолио разработчика с интерактивной 3D-сценой на Three.js. Включает анимации появления секций, адаптивный дизайн, форму контактов и частицы. Создано с использованием React, Vite, Tailwind CSS и GSAP.',
-      image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop',
+      image: '/images/my portfolio.png',
       tags: ['React', 'Three.js', 'GSAP', 'Tailwind'],
-      githubUrl: 'https://github.com/klufo/my-portfolio'
+      githubUrl: 'https://github.com/klufo/klufo.github.io'
     },
     {
       id: 2,
       title: 'Конфигуратор персонажа',
       description: 'Веб-приложение для кастомизации 3D-аватаров.',
       fullDescription: 'Приложение позволяет пользователям настраивать внешний вид 3D-персонажа в реальном времени: менять одежду, аксессуары, цвета. Использует Zustand для управления состоянием и оптимизированный рендеринг для плавной работы.',
-      image: 'https://avatars.mds.yandex.net/get-kinopoisk-image/1600647/30532b65-e138-4670-9111-c08ade7f6289/1920x',
+      image: '/images/config.png',
       tags: ['React', 'Zustand', 'Blender', 'WebGL'],
       githubUrl: '#'
     },
@@ -45,9 +45,10 @@ export default function Projects() {
       title: 'Аниме-лендинг',
       description: 'Промо-страница с параллакс-эффектами.',
       fullDescription: 'Лендинг в аниме-стилистике с параллакс-скроллом, микро-анимациями при наведении и адаптивной версткой. Оптимизирован для быстрой загрузки и плавной прокрутки на всех устройствах.',
-      image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&h=600&fit=crop',
+      image: '/images/anime landing.png',
       tags: ['Vue', 'GSAP', 'SCSS'],
-      githubUrl: '#'
+      githubUrl: 'https://github.com/klufo/anime-landing',
+      siteUrl: 'https://klufo.github.io/anime-landing/'
     }
   ]
 

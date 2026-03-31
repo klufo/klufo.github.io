@@ -86,10 +86,23 @@ export default function ProjectModal({ project, onClose }) {
                 Исходный код
               </a>
             )}
+
+            {project.siteUrl && (
+              <a
+                href={project.siteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg border border-slate-600 transition-colors"
+              >
+                Посетить
+              </a>
+            )}
+
+            
           </div>
         </div>
       </div>
     </div>,
     document.body
   )
-}
+} 
